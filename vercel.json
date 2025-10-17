@@ -1,8 +1,10 @@
 {
-  path: "/",
-  element: Home(),
-},
-{
-  path: "/test",
-  element: Test(),
+  "routes": [
+    { "src": "/", "dest": "/" },
+    { "src": "/test", "dest": "/" },
+    { "src": "/courses", "dest": "/" },
+    { "src": "/dashboard", "dest": "/" },
+    { "src": "/login", "dest": "/" },
+    { "src": "/register", "dest": "/" }
+  ]
 }
