@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Create Account | Sam Gold Tales</title>
+<meta name="description" content="Join Sam Gold Tales and learn AI video mastery with Sam Adiela. Create your account and access trainings instantly." />
+<meta name="robots" content="index,follow" />
+<style>
+  :root{--bg:#ffd60a;--header:#000;--text:#fff;--input-bg:#fff;--input-text:#000;--btn-bg:#000;--btn-text:#ffd60a;--radius:16px}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:'Poppins',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+  a{color:var(--text);text-decoration:none}
+  header{background:var(--header);padding:1rem 0}
+  .container{width:min(960px,92vw);margin-inline:auto;display:flex;justify-content:space-between;align-items:center}
+  .brand{display:flex;align-items:center;gap:.6rem;font-weight:900;font-size:1.3rem;color:var(--text)}
+  nav a{color:var(--text);margin-left:1rem;font-weight:500}
+  main{display:flex;align-items:center;justify-content:center;padding:6vh 1rem}
+  .card{background:var(--header);border-radius:var(--radius);padding:2rem;width:min(480px,92vw);box-shadow:0 10px 30px rgba(0,0,0,.3)}
+  h1{text-align:center;margin-bottom:1rem;color:var(--bg)}
+  label span{display:block;margin-bottom:.4rem;color:var(--text);font-weight:600}
+  .input,.select{width:100%;padding:.8rem;border-radius:10px;border:none;background:var(--input-bg);color:var(--input-text);margin-bottom:1rem;font-size:1rem}
+  .btn{width:100%;padding:.9rem;border-radius:999px;border:none;background:var(--btn-bg);color:var(--btn-text);font-weight:700;font-size:1.1rem;cursor:pointer;transition:.3s}
+  .btn:hover{opacity:.85}
+  .links{display:flex;justify-content:space-between;margin-top:1rem;flex-wrap:wrap;gap:.6rem}
+  .links a{background:var(--input-bg);color:var(--input-text);padding:.5rem .9rem;border-radius:999px;font-size:.9rem;font-weight:600}
+  .links a:hover{background:var(--bg);color:#000}
+  p{text-align:center;margin-top:1rem;color:var(--text)}
+  .error{color:#ff9aa2;text-align:center}
+  .ok{color:#b7f7c8;text-align:center}
+</style>
+</head>
+<body>
+<header>
+  <div class="container">
+    <a href="./index.html" class="brand">Sam Gold Tales</a>
+    <nav>
+      <a href="./index.html">Home</a>
+      <a href="./login.html">Login</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="card">
+    <h1>Create Account</h1>
+
+    <form id="regForm" onsubmit="return false;">
+      <label><span>Full Name</span>
+        <input type="text" class="input" name="name" placeholder="Sam Adiela" required />
+      </label>
+
+      <label><span>Email Address</span>
+        <input type="email" class="input" name="email" placeholder="you@example.com" required />
+      </label>
+
+      <label><span>Country Code</span>
+        <select class="select" name="cc">
+          <option value="+234">Nigeria (+234)</option>
+          <option value="+1">USA/Canada (+1)</option>
+          <option value="+44">UK (+44)</option>
+          <option value="+61">Australia (+61)</option>
+          <option value="+91">India (+91)</option>
+        </select>
+      </label>
+
+      <label><span>Phone Number</span>
+        <input type="tel" class="input" name="phone" placeholder="08162337303" required />
+      </label>
+
+      <label><span>Password</span>
+        <input type="password" class="input" name="password" placeholder="••••••••" minlength="6" required />
+      </label>
+
+      <button class="btn" id="submitBtn">Register</button>
+      <p id="msg"></p>
+    </form>
+
+    <div class="links">
+      <a href="https://selar.com/37787n" target="_blank">Buy Training</a>
+      <a href="https://wa.link/32k269" target="_blank">WhatsApp Support</a>
+    </div>
+
+    <p>Already have an account? <a href="./login.html" style="color:#ffd60a;">Login here</a></p>
+  </div>
+</main>
+
+<script>
+  // ========= Helpers =========
+  function validEmail(e){ return /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/.test(e.trim()); }
+  function validPhone(s){ return /^[0-9]{7,15}$/.test(s.trim()); }
+
+  async function sha256(text){
+    const enc = new TextEncoder().encode(text);
+    const buf = await crypto.subtle.digest('SHA-256', enc);
+    return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+  }
+
+  function loadUsers(){
+    try{ return JSON.parse(localStorage.getItem('sgt_users')||'[]'); }catch{ return []; }
+  }
+  function saveUsers(arr){ localStorage.setItem('sgt_users', JSON.stringify(arr)); }
+
+  function setSession(user){  // minimal session
+    localStorage.setItem('sgt_user', JSON.stringify({email:user.email,name:user.name}));
+  }
+
+  // ========= Register =========
+  const form = document.getElementById('regForm');
+  const msg  = document.getElementById('msg');
+
+  document.getElementById('submitBtn').addEventListener('click', async () => {
+    const f = new FormData(form);
+    const name = (f.get('name')||'').toString().trim();
+    const email = (f.get('email')||'').toString().trim();
+    const cc = (f.get('cc')||'').toString();
+    const phone = (f.get('phone')||'').toString().trim();
+    const password = (f.get('password')||'').toString();
+
+    if(!name || !email || !phone || !password){ return show('All fields are required.', true); }
+    if(!validEmail(email)){ return show('Please enter a valid email address.', true); }
+    if(!validPhone(phone)){ return show('Please enter a valid phone number (7–15 digits).', true); }
+    if(password.length < 6){ return show('Password must be at least 6 characters.', true); }
+
+    const users = loadUsers();
+    if(users.some(u => u.email.toLowerCase() === email.toLowerCase())){
+      return show('This email is already registered. Please log in.', true);
+    }
+
+    const passHash = await sha256(password);
+    const user = { name, email, phone: cc + phone, passHash, createdAt: Date.now() };
+    users.push(user);
+    saveUsers(users);
+    setSession(user);
+
+    show('Account created! Redirecting…', false);
+    setTimeout(()=> location.href='./dashboard.html', 700);
+  });
+
+  function show(text, isError){ msg.textContent = text; msg.className = isError ? 'error' : 'ok'; }
+</script>
+</body>
+</html>

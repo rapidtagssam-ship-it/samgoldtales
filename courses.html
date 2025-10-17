@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Courses | Sam Gold Tales Trainings</title>
+  <meta name="description" content="Exclusive training videos by Sam Adiela (Sam Gold Tales). Learn how to create viral AI videos and grow your income." />
+  <style>
+    :root{
+      --bg:#ffd60a;
+      --text:#000;
+      --card:#ffffff;
+      --line:#e5e7eb;
+      --brand:#000;
+      --radius:16px;
+      --shadow:0 10px 30px rgba(17,24,39,.06);
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:'Poppins',system-ui,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+    a{text-decoration:none;color:inherit}
+    header{background:#000;border-bottom:2px solid #ffd60a;color:#fff;position:sticky;top:0;z-index:40}
+    .nav{display:flex;align-items:center;justify-content:space-between;width:min(1120px,92vw);margin:auto;padding:1rem 0}
+    .brand{display:flex;align-items:center;gap:.6rem;font-weight:900}
+    .brand-logo{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;background:#ffd60a;color:#000;font-weight:900}
+    .menu{display:flex;gap:1rem;align-items:center}
+    .menu a{color:#fff;font-weight:600}
+    .btn{display:inline-flex;align-items:center;gap:.6rem;padding:.7rem 1rem;border-radius:999px;font-weight:700;background:#000;color:#ffd60a;border:1px solid #ffd60a;transition:.2s}
+    .btn:hover{opacity:.85}
+    main{width:min(1120px,92vw);margin:auto;padding:2rem 0}
+    h1{text-align:center;margin-bottom:1rem}
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1.5rem}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+    iframe{width:100%;height:240px;border:0}
+    .title{padding:1rem;font-weight:700;font-size:1rem}
+    footer{border-top:2px solid #000;background:#000;color:#fff;padding:1rem 0;margin-top:2rem}
+    footer .container{width:min(1120px,92vw);margin:auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
+    .pill{padding:.4rem .8rem;background:#fff;color:#000;border-radius:999px;border:1px solid #ccc}
+  </style>
+</head>
+<body>
+<header>
+  <div class="nav">
+    <a href="./index.html" class="brand"><span class="brand-logo">SG</span> Sam Gold Tales</a>
+    <nav class="menu">
+      <a href="./dashboard.html">Dashboard</a>
+      <a href="./payments.html">Payments</a>
+      <a class="btn" href="https://wa.link/32k269" target="_blank" rel="noopener">WhatsApp Support</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <h1>🎓 Your Course Library</h1>
+  <p style="text-align:center;max-width:700px;margin:auto;">
+    Welcome to your private training area. Watch and learn step-by-step how to create viral AI videos, grow your YouTube presence, and turn attention into income.
+  </p>
+
+  <div id="videoGrid" class="grid" style="margin-top:2rem">
+    <!-- Video cards will appear here -->
+  </div>
+</main>
+
+<footer>
+  <div class="container">
+    <div style="display:flex;align-items:center;gap:.6rem"><span class="brand-logo">SG</span> <strong>Sam Adiela</strong></div>
+    <div style="display:flex;gap:.6rem;flex-wrap:wrap">
+      <a class="pill" href="./dashboard.html">Dashboard</a>
+      <a class="pill" href="./payments.html">Payments</a>
+      <a class="pill" href="https://wa.link/32k269" target="_blank">WhatsApp</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ✅ Protect courses - allow only registered users
+(function(){
+  const user = JSON.parse(localStorage.getItem('sgt_user') || 'null');
+  const allUsers = JSON.parse(localStorage.getItem('sgt_users') || '[]');
+  const valid = !!(user && user.email && allUsers.some(u => u.email.toLowerCase() === user.email.toLowerCase()));
+
+  if(!valid){
+    alert("Access denied. Please register or log in to view courses.");
+    window.location.href = "./login.html";
+  }
+})();
+
+// ✅ Display Google Drive video(s)
+const videoGrid = document.getElementById("videoGrid");
+
+// You can list multiple video links here if you have more courses later
+const videos = [
+  {
+    title: "AI Video Mastery Lesson 1",
+    src: "https://drive.google.com/file/d/1OL9m9Yax15Nz8r3FGQ8AX8eDM5ztwWX4/preview"
+  }
+];
+
+videos.forEach(v => {
+  const card = document.createElement('div');
+  card.className = 'card';
+  card.innerHTML = `
+    <iframe src="${v.src}" allow="autoplay"></iframe>
+    <div class="title">${v.title}</div>
+  `;
+  videoGrid.appendChild(card);
+});
+</script>
+</body>
+</html>

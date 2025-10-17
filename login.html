@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Login | Sam Gold Tales</title>
+<meta name="robots" content="index,follow" />
+<style>
+  :root{--bg:#ffd60a;--header:#000;--text:#fff;--input-bg:#fff;--input-text:#000;--btn-bg:#000;--btn-text:#ffd60a;--radius:16px}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:'Poppins',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+  a{color:var(--text);text-decoration:none}
+  header{background:var(--header);padding:1rem 0}
+  .container{width:min(960px,92vw);margin-inline:auto;display:flex;justify-content:space-between;align-items:center}
+  .brand{display:flex;align-items:center;gap:.6rem;font-weight:900;font-size:1.3rem;color:var(--text)}
+  nav a{color:var(--text);margin-left:1rem;font-weight:500}
+  main{display:flex;align-items:center;justify-content:center;padding:10vh 1rem}
+  .card{background:var(--header);border-radius:var(--radius);padding:2rem;width:min(480px,92vw);box-shadow:0 10px 30px rgba(0,0,0,.3)}
+  h1{text-align:center;margin-bottom:1rem;color:var(--bg)}
+  label span{display:block;margin-bottom:.4rem;color:var(--text);font-weight:600}
+  .input{width:100%;padding:.9rem;border-radius:10px;border:none;background:var(--input-bg);color:var(--input-text);margin-bottom:1rem;font-size:1rem}
+  .btn{width:100%;padding:.95rem;border-radius:999px;border:none;background:var(--btn-bg);color:var(--btn-text);font-weight:800;font-size:1.05rem;cursor:pointer;transition:.2s}
+  .btn:hover{opacity:.85}
+  .muted{color:#ffeaa3;text-align:center}
+  .error{color:#ff9aa2;text-align:center}
+  .ok{color:#b7f7c8;text-align:center}
+</style>
+</head>
+<body>
+<header>
+  <div class="container">
+    <a href="./index.html" class="brand">Sam Gold Tales</a>
+    <nav>
+      <a href="./index.html">Home</a>
+      <a href="./register.html">Register</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="card">
+    <h1>Welcome back</h1>
+    <form id="loginForm" onsubmit="return false">
+      <label><span>Email</span>
+        <input class="input" name="email" type="email" placeholder="you@example.com" required />
+      </label>
+      <label><span>Password</span>
+        <input class="input" name="password" type="password" placeholder="••••••••" required />
+      </label>
+      <button class="btn" id="loginBtn">Login</button>
+      <p id="msg" class="muted"></p>
+    </form>
+    <p class="muted" style="margin-top:.6rem">Don’t have an account? <a href="./register.html" style="color:#ffd60a">Register</a></p>
+  </div>
+</main>
+
+<script>
+  // ===== Helpers =====
+  function loadUsers(){
+    try{ return JSON.parse(localStorage.getItem('sgt_users')||'[]'); }catch{ return []; }
+  }
+  function setSession(user){
+    // Store only minimal session info
+    localStorage.setItem('sgt_user', JSON.stringify({email:user.email,name:user.name}));
+  }
+  async function sha256(text){
+    const enc = new TextEncoder().encode(text);
+    const buf = await crypto.subtle.digest('SHA-256', enc);
+    return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+  }
+
+  // ===== Strict login: must match a registered user in sgt_users =====
+  const msg = document.getElementById('msg');
+  document.getElementById('loginBtn').addEventListener('click', async ()=>{
+    const f = new FormData(document.getElementById('loginForm'));
+    const email = (f.get('email')||'').toString().trim().toLowerCase();
+    const password = (f.get('password')||'').toString();
+
+    if(!email || !password){ return show('Enter email and password.'); }
+
+    const users = loadUsers();
+    if(!users.length){ return show('No account found. Please register first.'); }
+
+    const passHash = await sha256(password);
+    const user = users.find(u =>
+      u.email.toLowerCase() === email &&
+      u.passHash === passHash
+    );
+
+    if(!user){ return show('Invalid email or password.'); }
+
+    setSession(user);
+    show('Login successful! Redirecting…', false);
+    setTimeout(()=> location.href='./dashboard.html', 600);
+  });
+
+  function show(t, isError=true){ msg.textContent = t; msg.className = isError ? 'error' : 'ok'; }
+</script>
+</body>
+</html>

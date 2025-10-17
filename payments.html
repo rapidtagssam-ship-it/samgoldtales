@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Payments | Sam Gold Tales Trainings</title>
+<meta name="description" content="Make secure payments for AI Video Mastery trainings by Sam Adiela (Sam Gold Tales). Pay by transfer or via Selar checkout." />
+<meta name="robots" content="index,follow" />
+<style>
+  :root{
+    --bg:#ffd60a;
+    --header:#000;
+    --text:#fff;
+    --btn-bg:#000;
+    --btn-text:#ffd60a;
+    --radius:16px;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    font-family:'Poppins',system-ui,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    min-height:100vh;
+  }
+  header{
+    background:var(--header);
+    padding:1rem 0;
+  }
+  .container{
+    width:min(960px,92vw);
+    margin-inline:auto;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+  }
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:.6rem;
+    font-weight:900;
+    font-size:1.3rem;
+    color:var(--text);
+  }
+  nav a{
+    color:var(--text);
+    margin-left:1rem;
+    text-decoration:none;
+    font-weight:500;
+  }
+  main{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:5vh 1rem;
+  }
+  h1{
+    color:#000;
+    margin-bottom:.5rem;
+  }
+  p{
+    max-width:600px;
+    color:#111;
+    font-weight:500;
+  }
+  .btn{
+    display:inline-block;
+    padding:1rem 1.5rem;
+    border:none;
+    border-radius:999px;
+    background:var(--btn-bg);
+    color:var(--btn-text);
+    font-weight:700;
+    font-size:1rem;
+    margin:1rem 0.5rem;
+    cursor:pointer;
+    text-decoration:none;
+    box-shadow:0 8px 20px rgba(0,0,0,.3);
+    transition:.3s;
+  }
+  .btn:hover{opacity:0.85}
+  .card{
+    background:#000;
+    color:#ffd60a;
+    padding:2rem;
+    border-radius:var(--radius);
+    box-shadow:0 10px 25px rgba(0,0,0,.3);
+    margin-top:2rem;
+    width:min(480px,92vw);
+  }
+  .options{
+    display:none;
+    margin-top:1.5rem;
+    text-align:left;
+    background:#fff;
+    color:#000;
+    padding:1.5rem;
+    border-radius:var(--radius);
+    box-shadow:0 6px 15px rgba(0,0,0,.2);
+  }
+  .option{
+    border-bottom:1px solid #ddd;
+    padding:1rem 0;
+  }
+  .option:last-child{border:none;}
+  .option h3{color:#000;margin:0 0 .5rem;}
+  .option p{color:#333;margin:.3rem 0;}
+  footer{
+    background:#000;
+    color:#fff;
+    text-align:center;
+    padding:1rem;
+    font-size:0.9rem;
+    margin-top:3rem;
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="container">
+    <a href="./index.html" class="brand">Sam Gold Tales</a>
+    <nav>
+      <a href="./index.html">Home</a>
+      <a href="./dashboard.html">Dashboard</a>
+      <a href="./login.html">Login</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <h1>Make Payment</h1>
+  <p>Choose your preferred payment method to gain instant access to <strong>AI Video Mastery Trainings</strong> by <strong>Sam Adiela (Sam Gold Tales)</strong>.</p>
+
+  <div class="card">
+    <h2 style="margin-top:0;">Payment Options</h2>
+    <p>Click below to view available payment methods.</p>
+    <button class="btn" id="payNow">💳 Pay Now</button>
+
+    <div class="options" id="paymentOptions">
+      <div class="option">
+        <h3>💰 Bank Transfer</h3>
+        <p><strong>Account Name:</strong> Sam Ogide Adiela Nwakama</p>
+        <p><strong>Account Number:</strong> 8162337303</p>
+        <p><strong>Bank:</strong> (Enter your bank name here)</p>
+        <p>After payment, kindly send proof to our WhatsApp number for confirmation.</p>
+      </div>
+
+      <div class="option">
+        <h3>🌐 Pay Online (Selar)</h3>
+        <p>Use the secure Selar checkout to complete your purchase instantly.</p>
+        <a href="https://selar.com/37787n" target="_blank" class="btn">Pay via Selar</a>
+      </div>
+
+      <div class="option">
+        <h3>📞 Need Help?</h3>
+        <p>Contact us directly on WhatsApp for support or payment confirmation.</p>
+        <a href="https://wa.link/32k269" target="_blank" class="btn">Chat on WhatsApp</a>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <p>&copy; <span id="year"></span> Sam Gold Tales. All rights reserved.</p>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // Toggle payment options visibility
+  const payNow = document.getElementById('payNow');
+  const options = document.getElementById('paymentOptions');
+
+  payNow.addEventListener('click', () => {
+    const visible = options.style.display === 'block';
+    options.style.display = visible ? 'none' : 'block';
+    payNow.textContent = visible ? '💳 Pay Now' : '⬆️ Hide Payment Options';
+  });
+</script>
+</body>
+</html>
