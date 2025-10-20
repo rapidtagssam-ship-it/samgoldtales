@@ -1,25 +1,306 @@
-<!-- ========= Playlist Calculator Logic (improved errors) ========= -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="google-site-verification" content="2fm4mwCbY80UMSAtFJn5AZJNoXnhSTuh_Dz-hFn2S9s" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- ====== SEO Core ====== -->
+  <title>Sam Gold Tales | African Folktales & AI Video Mastery by Sam Adiela</title>
+  <meta name="description" content="Sam Gold Tales by Sam Adiela — African folktales with moral lessons, plus AI video mastery to grow your channel and income. Watch, learn, and create." />
+  <meta name="keywords" content="Sam Gold, Sam Gold Tales, African folktales, stories with moral lesson, AI video training, playlist calculator, Sam Adiela" />
+  <link rel="canonical" href="https://samgoldtales-xk7x.vercel.app/" />
+  <meta name="robots" content="index, follow" />
+
+  <!-- ====== Open Graph / Twitter ====== -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Sam Gold Tales | African Folktales & AI Video Mastery" />
+  <meta property="og:description" content="Discover inspiring African folktales & learn AI video mastery from Sam Gold Tales. Transform creativity into growth." />
+  <meta property="og:url" content="https://samgoldtales-xk7x.vercel.app/" />
+  <!-- Replace this image with your real cover image path when ready -->
+  <meta property="og:image" content="https://samgoldtales-xk7x.vercel.app/cover.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Sam Gold Tales" />
+  <meta name="twitter:description" content="African folktales, moral stories, and AI video mastery." />
+  <meta name="twitter:image" content="https://samgoldtales-xk7x.vercel.app/cover.jpg" />
+
+  <!-- ====== Brand Styles ====== -->
+  <style>
+    :root{
+      --bg:#ffd60a;      /* primary background */
+      --text:#000;       /* primary text */
+      --muted:#374151;   /* supporting text */
+      --card:#ffffff;    /* cards */
+      --line:#e5e7eb;    /* borders */
+      --ink:#101014;
+      --radius:16px;
+      --shadow:0 10px 30px rgba(17,24,39,.06);
+    }
+    *,*::before,*::after{box-sizing:border-box}
+    body{margin:0;font-family:'Poppins',system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:var(--text);background:var(--bg);line-height:1.6}
+    a{color:inherit;text-decoration:none}
+    img{max-width:100%;display:block}
+    .container{width:min(1120px,92vw);margin-inline:auto}
+
+    /* Buttons, cards, layout */
+    .btn{display:inline-flex;align-items:center;gap:.6rem;padding:.9rem 1.2rem;border-radius:999px;font-weight:800;background:#000;color:#ffd60a;border:1px solid #222;box-shadow:0 10px 24px rgba(0,0,0,.25);transition:.2s}
+    .btn:hover{opacity:.9}
+    .btn--ghost{background:#fff;border:1px solid var(--line);color:var(--ink)}
+    .pill{display:inline-block;padding:.35rem .75rem;border:1px solid var(--line);border-radius:999px;color:var(--muted);background:#fff}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}
+    .grid{display:grid;gap:1.2rem}.grid-3{grid-template-columns:repeat(3,1fr)}.grid-2{grid-template-columns:repeat(2,1fr)}
+    @media (max-width:900px){.grid-3,.grid-2{grid-template-columns:1fr}}
+
+    /* Header / Nav */
+    header{position:sticky;top:0;z-index:40;background:#000;border-bottom:2px solid #ffd60a;}
+    .nav{display:flex;align-items:center;justify-content:space-between;padding:.8rem 0}
+    .brand{display:flex;align-items:center;gap:.6rem;font-weight:900;color:#fff}
+    .brand-logo{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;background:#ffd60a;color:#000;font-weight:900}
+    .menu{display:flex;gap:1rem;align-items:center}
+    .menu a{color:#fff;font-weight:600}
+    /* Make Stories stand out a bit */
+    .menu a[href="./stories.html"]{color:#ffd60a;font-weight:700}
+    .mobile-toggle{display:none}
+    @media (max-width:900px){.menu{display:none}.mobile-toggle{display:inline-flex}}
+    #mobileMenu{display:none;padding:1rem;border-bottom:1px solid var(--line);background:#000;}
+    #mobileMenu a{display:block;color:#fff;margin:.5rem 0;}
+
+    /* Sections */
+    .hero{padding:64px 0 28px}
+    h1{font-size:clamp(1.9rem,3.6vw,3rem);line-height:1.1;margin:0;color:#000}
+    .lead{color:#111}
+
+    /* Calculator */
+    .calc{margin:16px 0 40px}
+    .calc .card{padding:1rem}
+    .calc h2{margin:0 0 .6rem;color:#000}
+    .form-row{display:grid;grid-template-columns:1fr auto;gap:.6rem}
+    @media (max-width:900px){.form-row{grid-template-columns:1fr}}
+    .input{width:100%;padding:.85rem;border-radius:12px;border:1px solid var(--line);background:#fff;color:#000}
+    .help{color:#374151;font-size:.9rem;margin-top:.4rem}
+    .results{display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem;margin-top:.8rem}
+    @media (max-width:900px){.results{grid-template-columns:1fr}}
+    .stat{background:#fff;border:1px solid var(--line);border-radius:12px;padding:.8rem}
+    .stat h3{margin:.2rem 0;color:#000}
+    .stat p{margin:.2rem 0;color:#374151}
+
+    /* About / Featured blocks */
+    .block{background:#fff;padding:2rem;border-radius:16px;border:1px solid var(--line);box-shadow:var(--shadow)}
+    .block h2{margin:0 0 .6rem;color:#000}
+    .block p{margin:.3rem 0}
+
+    /* Footer */
+    footer{border-top:2px solid #000;background:#000;color:#fff}
+  </style>
+
+  <!-- ====== Structured Data (SEO) ====== -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"Person",
+    "name":"Sam Adiela",
+    "alternateName":"Sam Gold Tales",
+    "url":"https://samgoldtales-xk7x.vercel.app/",
+    "sameAs":[
+      "https://www.youtube.com/@samgoldtales",
+      "https://wa.link/32k269"
+    ],
+    "jobTitle":"AI Video Coach"
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"WebSite",
+    "name":"Sam Gold Tales",
+    "url":"https://samgoldtales-xk7x.vercel.app/",
+    "potentialAction":{
+      "@type":"SearchAction",
+      "target":"https://samgoldtales-xk7x.vercel.app/?q={search_term_string}",
+      "query-input":"required name=search_term_string"
+    }
+  }
+  </script>
+  <meta name="google-site-verification" content="2fm4mwCbY80UMSAtFJn5AZJNoXnhSTuh_Dz-hFn2S9s" />
+</head>
+
+<body>
+<header>
+  <div class="container nav">
+    <a class="brand" href="./index.html">
+      <span class="brand-logo">SG</span>
+      <span>Sam Gold Tales</span>
+    </a>
+    <nav class="menu">
+      <a href="./login.html">Login</a>
+      <a href="./dashboard.html">Dashboard</a>
+      <!-- Courses will be auto-inserted here for logged-in users -->
+      <a href="./stories.html">Stories</a>
+      <a href="./payments.html">Payments</a>
+      <a class="btn" href="https://selar.com/37787n" target="_blank" rel="noopener">Buy Now</a>
+    </nav>
+    <a class="btn btn--ghost mobile-toggle" href="#menu" onclick="document.getElementById('mobileMenu').style.display='block'">Menu</a>
+  </div>
+
+  <div id="mobileMenu" class="container">
+    <a href="./login.html">Login</a>
+    <a href="./dashboard.html">Dashboard</a>
+    <!-- Courses will be auto-inserted here for logged-in users -->
+    <a href="./stories.html">Stories</a>
+    <a href="./payments.html">Payments</a>
+    <a class="btn" href="https://selar.com/37787n" target="_blank" rel="noopener">Buy Now</a>
+  </div>
+</header>
+
+<section class="hero container">
+  <div class="grid grid-2">
+    <div>
+      <span class="pill" style="background:#fff;color:#000;border-color:#000">New • AI Video Mastery</span>
+      <h1 style="margin-top:.4rem">Grow with stories & AI — <span style="color:#000;font-weight:700">Sam Gold Tales</span></h1>
+      <p class="lead">
+        I'm <strong>Sam Adiela</strong> (aka <strong>Sam Gold Tales</strong>).
+        I share timeless <strong>African folktales</strong> with moral lessons, and teach
+        <strong>AI video mastery</strong> so you can publish faster, grow your channel, and turn creativity into income.
+      </p>
+      <div style="display:flex;gap:.8rem;flex-wrap:wrap;margin-top:1rem">
+        <a class="btn" href="https://www.youtube.com/@samgoldtales" target="_blank" rel="noopener">🎥 Visit YouTube Channel</a>
+        <a class="btn" href="https://selar.com/37787n" target="_blank" rel="noopener">Buy Trainings</a>
+        <a class="btn btn--ghost" href="./login.html">Login</a>
+        <a class="pill" href="https://wa.link/32k269" target="_blank" rel="noopener">WhatsApp Support ↗</a>
+      </div>
+    </div>
+
+    <div class="card" style="overflow:hidden;border-radius:14px">
+      <!-- Promote your playlist front-and-center -->
+      <iframe title="Sam Gold Tales Playlist" width="100%" height="315"
+        src="https://www.youtube.com/embed/videoseries?list=PLRBY4cYxp2r_2mCaMtEF8U6QdQX4gCqvL"
+        allowfullscreen></iframe>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Playlist Duration Calculator (Built-in Key line below) ===== -->
+<section class="calc container">
+  <div class="card">
+    <h2>🎬 YouTube Playlist Duration Calculator</h2>
+    <p class="help">This calculator uses your built-in API key line (below in the script). Paste a playlist URL/ID or leave blank to use your default playlist.</p>
+    <div class="form-row" style="margin-top:.6rem">
+      <input id="playlistInput" class="input" placeholder="Playlist URL or ID (optional)" />
+      <button id="calcBtn" class="btn">Calculate</button>
+    </div>
+    <div id="calcMsg" class="help" style="margin-top:.6rem"></div>
+    <div class="results" id="results" style="display:none">
+      <div class="stat"><h3>Total Duration</h3><p id="totalDuration">—</p></div>
+      <div class="stat"><h3>Video Count</h3><p id="videoCount">—</p></div>
+      <div class="stat"><h3>Average Length</h3><p id="avgLength">—</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Keyword-rich About block for SEO ===== -->
+<section class="container">
+  <div class="block">
+    <h2>About Sam Gold Tales</h2>
+    <p>
+      <strong>Sam Gold Tales</strong>, founded by <strong>Sam Adiela</strong>, shares timeless
+      <strong>African folktales</strong> and <strong>stories with moral lessons</strong> while teaching
+      <strong>AI video mastery</strong> for creators and educators. Explore inspiring stories and practical
+      tools like the <em>Sam Playlist Calculator</em> to grow your channel with confidence.
+    </p>
+  </div>
+</section>
+
+<!-- ===== Featured Story teaser to boost Stories page SEO ===== -->
+<section class="container" style="margin-top:1rem">
+  <div class="block">
+    <h2>Featured Story: The Lion and the Clever Hare</h2>
+    <p>A classic African folktale where wisdom defeats brute strength. Read the full story and more moral lessons.</p>
+    <div style="display:flex;gap:.6rem;flex-wrap:wrap;margin-top:.5rem">
+      <a class="btn" href="./stories.html">📖 Read African Folktales</a>
+      <a class="btn btn--ghost" href="./courses.html">🎓 Explore Courses</a>
+    </div>
+  </div>
+</section>
+
+<section id="pricing" class="container" style="padding:24px 0 56px">
+  <h2 style="margin:0 0 .6rem;color:#000">Choose your access</h2>
+  <p class="lead">Start today. Instant access • Future updates included.</p>
+  <div class="grid grid-3">
+    <div class="card" style="padding:1rem">
+      <h3>Starter — $49</h3>
+      <p>Core modules + templates.</p>
+      <a class="btn" href="https://selar.com/37787n" target="_blank" rel="noopener">Buy Starter</a>
+    </div>
+    <div class="card" style="padding:1rem;border-color:#000">
+      <h3>Pro — $99 <span class="pill" style="background:#000;color:#ffd60a;border-color:#000;">Most Popular</span></h3>
+      <p>All modules + Bot access + community.</p>
+      <a class="btn" href="https://selar.com/37787n" target="_blank" rel="noopener">Buy Pro</a>
+    </div>
+    <div class="card" style="padding:1rem">
+      <h3>Agency — $199</h3>
+      <p>Team license + client kit.</p>
+      <a class="btn" href="https://selar.com/37787n" target="_blank" rel="noopener">Buy Agency</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container" style="display:flex;gap:1rem;flex-wrap:wrap;justify-content:space-between;align-items:center;padding:18px 0">
+    <div style="display:flex;align-items:center;gap:.6rem"><span class="brand-logo">SG</span> <strong>Sam Adiela</strong></div>
+    <div style="display:flex;gap:.6rem;flex-wrap:wrap">
+      <a class="pill" href="https://www.youtube.com/@samgoldtales" target="_blank" rel="noopener">YouTube Channel</a>
+      <a class="pill" href="./stories.html">Stories</a>
+      <a class="pill" href="./dashboard.html">Dashboard</a>
+      <a class="pill" href="./payments.html">Payments</a>
+      <a class="pill" href="https://wa.link/32k269" target="_blank" rel="noopener">WhatsApp</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ========= Insert "Courses" link ONLY for logged-in users ========= -->
+<script>
+(function(){
+  const session = JSON.parse(localStorage.getItem('sgt_user') || 'null');
+  const users = JSON.parse(localStorage.getItem('sgt_users') || '[]');
+  const isValid = !!(session && session.email && users.some(u => u.email && u.email.toLowerCase() === session.email.toLowerCase()));
+
+  if(isValid){
+    document.querySelectorAll('.menu, #mobileMenu').forEach(menu=>{
+      const link = document.createElement('a');
+      link.href = './courses.html';
+      link.textContent = 'Courses';
+      link.style.fontWeight = '600';
+      link.style.color = '#fff';
+      link.style.marginLeft = '1rem';
+      // Insert before the Buy Now button if present
+      const buyBtn = menu.querySelector('.btn[href*="selar.com"]');
+      if(buyBtn) menu.insertBefore(link, buyBtn); else menu.appendChild(link);
+    });
+  }
+})();
+</script>
+
+<!-- ========= Playlist Calculator Logic ========= -->
 <script>
 const DEFAULT_PLAYLIST_ID = 'PLRBY4cYxp2r_2mCaMtEF8U6QdQX4gCqvL';
 
 /*
   IMPORTANT:
-  Keep your real key here for now (testing). When you get a custom domain,
-  restrict this key to your domain in Google Cloud.
+  Replace the value below *locally* with your real API key for testing.
+  Do NOT commit or publish your real key without restricting it in Google Cloud.
 */
-const apiKey = 'AIzaSyD5R9Z-wq1GU0KFpMwZIxPda4ho5wawgq0'; // your key
+const apiKey = 'AIzaSyD5R9Z-wq1GU0KFpMwZIxPda4ho5wawgq0'; // e.g., 'AIzaSy...'
 
-document.getElementById('calcBtn').addEventListener('click', runCalc);
-
-async function runCalc(){
+document.getElementById('calcBtn').addEventListener('click', async ()=>{
   const playlistRaw = (document.getElementById('playlistInput').value || '').trim();
   const msg = document.getElementById('calcMsg');
   const resultsBox = document.getElementById('results');
+
   msg.textContent = '';
   resultsBox.style.display = 'none';
 
-  if(!apiKey){
-    msg.textContent = 'No API key found in the script (apiKey variable).';
+  if(!apiKey || apiKey.includes('PASTE_YOUR_API_KEY_HERE')){
+    msg.textContent = 'Please paste your YouTube Data API key in the script (apiKey variable).';
     return;
   }
 
@@ -28,16 +309,11 @@ async function runCalc(){
 
   try{
     const videoIds = await getAllPlaylistVideoIds(playlistId, apiKey);
-    if(videoIds.length === 0){
-      msg.textContent = 'No videos found in this playlist.';
-      return;
-    }
-
+    if(videoIds.length === 0){ msg.textContent = 'No videos found.'; return; }
     msg.textContent = `Found ${videoIds.length} videos. Fetching durations…`;
     const durations = await getVideoDurations(videoIds, apiKey);
     const totalSeconds = durations.reduce((a,b)=>a+b,0);
     const avgSeconds = Math.round(totalSeconds / durations.length);
-
     document.getElementById('totalDuration').textContent = formatHMS(totalSeconds);
     document.getElementById('videoCount').textContent = String(durations.length);
     document.getElementById('avgLength').textContent = formatHMS(avgSeconds);
@@ -45,9 +321,9 @@ async function runCalc(){
     msg.textContent = 'Done.';
   }catch(err){
     console.error(err);
-    msg.textContent = 'Error: ' + err.message;
+    msg.textContent = 'Error: ' + (err?.message || 'Could not fetch playlist.');
   }
-}
+});
 
 function extractPlaylistId(input){
   if(!input) return null;
@@ -56,79 +332,60 @@ function extractPlaylistId(input){
       const u = new URL(input);
       const list = u.searchParams.get('list');
       if(list) return list;
-      const maybe = u.pathname.split('/').find(p => p && p.startsWith('PL'));
+      const parts = u.pathname.split('/');
+      const maybe = parts.find(p=>p && p.startsWith('PL'));
       return maybe || null;
     } else {
       return /^([A-Za-z0-9_-]){10,}$/.test(input) ? input : null;
     }
-  }catch{ return null; }
+  }catch{return null;}
 }
 
-async function getAllPlaylistVideoIds(playlistId, key){
+async function getAllPlaylistVideoIds(playlistId, apiKey){
   const ids = [];
   let pageToken = '';
-
   do{
     const url = new URL('https://www.googleapis.com/youtube/v3/playlistItems');
     url.searchParams.set('part','contentDetails');
     url.searchParams.set('playlistId', playlistId);
     url.searchParams.set('maxResults','50');
-    url.searchParams.set('key', key);
+    url.searchParams.set('key', apiKey);
     if(pageToken) url.searchParams.set('pageToken', pageToken);
 
-    const data = await fetchJSON(url);
-    (data.items || []).forEach(it => {
-      const vid = it?.contentDetails?.videoId;
-      if(vid) ids.push(vid);
-    });
+    const res = await fetch(url.toString());
+    if(!res.ok) throw new Error('Failed playlist fetch: '+res.status);
+    const data = await res.json();
+    (data.items||[]).forEach(it=>{ const vid=it?.contentDetails?.videoId; if(vid) ids.push(vid); });
     pageToken = data.nextPageToken || '';
-  } while(pageToken);
-
+  }while(pageToken);
   return ids;
 }
 
-async function getVideoDurations(videoIds, key){
+async function getVideoDurations(videoIds, apiKey){
   const batches = [];
-  for(let i=0;i<videoIds.length;i+=50) batches.push(videoIds.slice(i,i+50));
-
+  for(let i=0;i<videoIds.length;i+=50){ batches.push(videoIds.slice(i,i+50)); }
   const secondsArr = [];
   for(const batch of batches){
     const url = new URL('https://www.googleapis.com/youtube/v3/videos');
     url.searchParams.set('part','contentDetails');
     url.searchParams.set('id', batch.join(','));
-    url.searchParams.set('key', key);
+    url.searchParams.set('key', apiKey);
 
-    const data = await fetchJSON(url);
-    (data.items || []).forEach(v => {
-      const iso = v?.contentDetails?.duration || 'PT0S';
+    const res = await fetch(url.toString());
+    if(!res.ok) throw new Error('Failed video fetch: '+res.status);
+    const data = await res.json();
+    (data.items||[]).forEach(v=>{
+      const iso=v?.contentDetails?.duration || 'PT0S';
       secondsArr.push(isoToSeconds(iso));
     });
   }
   return secondsArr;
 }
 
-async function fetchJSON(url){
-  const res = await fetch(url.toString());
-  let payload = null;
-
-  try { payload = await res.json(); } catch { /* ignore */ }
-
-  if(!res.ok){
-    // Surface the real YouTube error message if available
-    const apiMsg = payload?.error?.message;
-    const reason = payload?.error?.errors?.[0]?.reason;
-    const composed = apiMsg ? `${apiMsg}${reason ? ' ('+reason+')' : ''}` : `HTTP ${res.status}`;
-    throw new Error(composed);
-  }
-  return payload || {};
-}
-
 function isoToSeconds(iso){
   const m = (iso||'').match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/);
   if(!m) return 0;
-  const h = parseInt(m[1]||'0',10);
-  const min = parseInt(m[2]||'0',10);
-  const s = parseInt(m[3]||'0',10);
+  const h = parseInt(m[1]||'0',10), min = parseInt(m[2]||'0',10), s = parseInt(m[3]||'0',10);
   return h*3600 + min*60 + s;
 }
 
@@ -143,3 +400,5 @@ function formatHMS(total){
   return parts.join(' ');
 }
 </script>
+</body>
+</html>
